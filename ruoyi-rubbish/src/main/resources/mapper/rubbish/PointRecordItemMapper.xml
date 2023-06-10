@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.PointRecordItemMapper">
+    
+    <resultMap type="PointRecordItem" id="PointRecordItemResult">
+        <result property="id"    column="id"    />
+        <result property="recordMainId"    column="record_main_id"    />
+        <result property="effectivePoint"    column="effective_point"    />
+        <result property="virtualPoint"    column="virtual_point"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPointRecordItemVo">
+        select id, record_main_id, effective_point, virtual_point, create_by, create_time, update_by, update_time from point_record_item
+    </sql>
+
+    <select id="selectPointRecordItemList" parameterType="PointRecordItem" resultMap="PointRecordItemResult">
+        <include refid="selectPointRecordItemVo"/>
+        <where>  
+            <if test="recordMainId != null "> and record_main_id = #{recordMainId}</if>
+            <if test="effectivePoint != null "> and effective_point = #{effectivePoint}</if>
+            <if test="virtualPoint != null "> and virtual_point = #{virtualPoint}</if>
+        </where>
+    </select>
+    
+    <select id="selectPointRecordItemById" parameterType="Long" resultMap="PointRecordItemResult">
+        <include refid="selectPointRecordItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPointRecordItem" parameterType="PointRecordItem">
+        insert into point_record_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="recordMainId != null">record_main_id,</if>
+            <if test="effectivePoint != null">effective_point,</if>
+            <if test="virtualPoint != null">virtual_point,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="recordMainId != null">#{recordMainId},</if>
+            <if test="effectivePoint != null">#{effectivePoint},</if>
+            <if test="virtualPoint != null">#{virtualPoint},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePointRecordItem" parameterType="PointRecordItem">
+        update point_record_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="recordMainId != null">record_main_id = #{recordMainId},</if>
+            <if test="effectivePoint != null">effective_point = #{effectivePoint},</if>
+            <if test="virtualPoint != null">virtual_point = #{virtualPoint},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePointRecordItemById" parameterType="Long">
+        delete from point_record_item where id = #{id}
+    </delete>
+
+    <delete id="deletePointRecordItemByIds" parameterType="String">
+        delete from point_record_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

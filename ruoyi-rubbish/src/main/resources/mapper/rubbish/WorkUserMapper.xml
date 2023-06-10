@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.WorkUserMapper">
+    
+    <resultMap type="WorkUser" id="WorkUserResult">
+        <result property="id"    column="id"    />
+        <result property="wxUid"    column="wx_uid"    />
+        <result property="name"    column="name"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="status"    column="status"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectWorkUserVo">
+        select id, wx_uid, name, telephone, status, is_deleted, create_by, create_time, update_by, update_time, remark from work_user
+    </sql>
+
+    <select id="selectWorkUserList" parameterType="WorkUser" resultMap="WorkUserResult">
+        <include refid="selectWorkUserVo"/>
+        <where>  
+            <if test="wxUid != null  and wxUid != ''"> and wx_uid = #{wxUid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorkUserById" parameterType="Long" resultMap="WorkUserResult">
+        <include refid="selectWorkUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWorkUser" parameterType="WorkUser" useGeneratedKeys="true" keyProperty="id">
+        insert into work_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wxUid != null">wx_uid,</if>
+            <if test="name != null">name,</if>
+            <if test="telephone != null">telephone,</if>
+            <if test="status != null">status,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wxUid != null">#{wxUid},</if>
+            <if test="name != null">#{name},</if>
+            <if test="telephone != null">#{telephone},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorkUser" parameterType="WorkUser">
+        update work_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxUid != null">wx_uid = #{wxUid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWorkUserById" parameterType="Long">
+        delete from work_user where id = #{id}
+    </delete>
+
+    <delete id="deleteWorkUserByIds" parameterType="String">
+        delete from work_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

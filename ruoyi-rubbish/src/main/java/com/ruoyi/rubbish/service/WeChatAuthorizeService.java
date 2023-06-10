@@ -6,7 +6,11 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.http.HttpUtils;
 import com.ruoyi.common.utils.uuid.UUID;
+import com.ruoyi.rubbish.config.RubbishConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,33 +23,30 @@ import java.util.Map;
  * @date 2023/6/10 上午 11:09
  */
 @Slf4j
+@Component
 public class WeChatAuthorizeService {
 
-    /**
-     * 微信小程序APPID
-     */
-    private final static String AppID = "wx767712689606a598";
-    /**
-     * 微信APP密钥
-     */
-    private final static String AppSecret = "94cf407a9d37aad2ce0472045f2c67e3";
+    private final RubbishConfig config;
+
+    public WeChatAuthorizeService(RubbishConfig config) {
+        this.config = config;
+    }
 
     /**
      * 登录时获取的 code（微信官方提供的临时凭证）
      * @param object
-     * @return
+     * @return AjaxResult
      */
-
     public AjaxResult wxLogin(Map object){
         //微信官方提供的微信小程序登录授权时使用的URL地址
         String url  = "https://api.weixin.qq.com/sns/jscode2session";
-        System.out.println(object);
+        //System.out.println(object);
         /**
          * 拼接需要的参数
          * js_code =  wx.login()获取的
          * grant_type=authorization_code = code 微信官方提供的临时凭证
          */
-        String params = StringUtils.format("appid={}&secret={}&js_code={}&grant_type=authorization_code", AppID, AppSecret, object.get("code"));
+        String params = StringUtils.format("appid={}&secret={}&js_code={}&grant_type=authorization_code", config.getAppId(), config.getAppSecret(), object.get("code"));
         //开始发起网络请求,若依管理系统自带网络请求工具，直接使用即可
         String res = HttpUtils.sendGet(url,params);
         log.info("输出请求到的结果：{}",res);
@@ -63,7 +64,7 @@ public class WeChatAuthorizeService {
         data.put("state",true);
         data.put("nickName",object.get("nickName"));
         data.put("avatarUrl",object.get("avatarUrl"));
-        /**先通过openid来查询是否存在*/
+        /*先通过openid来查询是否存在*/
 //        AbucoderWxuser abucoderWxuser = iAbucoderWxuserService.selectAbucoderWxuserOpenID(openid);
 //        if (abucoderWxuser == null){
 //            /**如果不存在就插入到我们的数据库里*/
@@ -84,7 +85,7 @@ public class WeChatAuthorizeService {
 //            abucoderWxuser.setUpdateBy("Abu");
 //            iAbucoderWxuserService.updateAbucoderWxuser(abucoderWxuser);
 //        }
-        /**返回结果集到前段*/
+        /*返回结果集到前段*/
         return AjaxResult.success(data);
     }
 

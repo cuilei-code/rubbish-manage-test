@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.RubbishLocationMapper">
+    
+    <resultMap type="RubbishLocation" id="RubbishLocationResult">
+        <result property="id"    column="id"    />
+        <result property="simpleName"    column="simple_name"    />
+        <result property="address"    column="address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="remark"    column="remark"    />
+        <result property="tag"    column="tag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectRubbishLocationVo">
+        select id, simple_name, address, longitude, latitude, remark, tag, create_by, create_time, update_by, update_time from rubbish_location
+    </sql>
+
+    <select id="selectRubbishLocationList" parameterType="RubbishLocation" resultMap="RubbishLocationResult">
+        <include refid="selectRubbishLocationVo"/>
+        <where>  
+            <if test="simpleName != null  and simpleName != ''"> and simple_name like concat('%', #{simpleName}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="longitude != null "> and longitude = #{longitude}</if>
+            <if test="latitude != null "> and latitude = #{latitude}</if>
+            <if test="tag != null  and tag != ''"> and tag = #{tag}</if>
+        </where>
+    </select>
+    
+    <select id="selectRubbishLocationById" parameterType="Long" resultMap="RubbishLocationResult">
+        <include refid="selectRubbishLocationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertRubbishLocation" parameterType="RubbishLocation" useGeneratedKeys="true" keyProperty="id">
+        insert into rubbish_location
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="simpleName != null">simple_name,</if>
+            <if test="address != null">address,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="remark != null">remark,</if>
+            <if test="tag != null">tag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="simpleName != null">#{simpleName},</if>
+            <if test="address != null">#{address},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="tag != null">#{tag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRubbishLocation" parameterType="RubbishLocation">
+        update rubbish_location
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="simpleName != null">simple_name = #{simpleName},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="tag != null">tag = #{tag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRubbishLocationById" parameterType="Long">
+        delete from rubbish_location where id = #{id}
+    </delete>
+
+    <delete id="deleteRubbishLocationByIds" parameterType="String">
+        delete from rubbish_location where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

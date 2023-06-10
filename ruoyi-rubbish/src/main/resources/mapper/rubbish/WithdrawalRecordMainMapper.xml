@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.WithdrawalRecordMainMapper">
+    
+    <resultMap type="WithdrawalRecordMain" id="WithdrawalRecordMainResult">
+        <result property="id"    column="id"    />
+        <result property="wxUid"    column="wx_uid"    />
+        <result property="wxNickname"    column="wx_nickName"    />
+        <result property="withdrawAmount"    column="withdraw_Amount"    />
+        <result property="remark"    column="remark"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWithdrawalRecordMainVo">
+        select id, wx_uid, wx_nickName, withdraw_Amount, remark, is_deleted, create_by, create_time, update_by, update_time from Withdrawal_Record_Main
+    </sql>
+
+    <select id="selectWithdrawalRecordMainList" parameterType="WithdrawalRecordMain" resultMap="WithdrawalRecordMainResult">
+        <include refid="selectWithdrawalRecordMainVo"/>
+        <where>  
+            <if test="wxUid != null  and wxUid != ''"> and wx_uid = #{wxUid}</if>
+            <if test="wxNickname != null  and wxNickname != ''"> and wx_nickName like concat('%', #{wxNickname}, '%')</if>
+            <if test="withdrawAmount != null "> and withdraw_Amount = #{withdrawAmount}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectWithdrawalRecordMainById" parameterType="Long" resultMap="WithdrawalRecordMainResult">
+        <include refid="selectWithdrawalRecordMainVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWithdrawalRecordMain" parameterType="WithdrawalRecordMain" useGeneratedKeys="true" keyProperty="id">
+        insert into Withdrawal_Record_Main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wxUid != null">wx_uid,</if>
+            <if test="wxNickname != null">wx_nickName,</if>
+            <if test="withdrawAmount != null">withdraw_Amount,</if>
+            <if test="remark != null">remark,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wxUid != null">#{wxUid},</if>
+            <if test="wxNickname != null">#{wxNickname},</if>
+            <if test="withdrawAmount != null">#{withdrawAmount},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWithdrawalRecordMain" parameterType="WithdrawalRecordMain">
+        update Withdrawal_Record_Main
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxUid != null">wx_uid = #{wxUid},</if>
+            <if test="wxNickname != null">wx_nickName = #{wxNickname},</if>
+            <if test="withdrawAmount != null">withdraw_Amount = #{withdrawAmount},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWithdrawalRecordMainById" parameterType="Long">
+        delete from Withdrawal_Record_Main where id = #{id}
+    </delete>
+
+    <delete id="deleteWithdrawalRecordMainByIds" parameterType="String">
+        delete from Withdrawal_Record_Main where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

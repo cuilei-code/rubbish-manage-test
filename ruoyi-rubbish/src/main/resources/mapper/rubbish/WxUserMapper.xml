@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.WxUserMapper">
+    
+    <resultMap type="WxUser" id="WxUserResult">
+        <result property="id"    column="id"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="userName"    column="user_name"    />
+        <result property="gender"    column="gender"    />
+        <result property="openid"    column="openid"    />
+        <result property="wxUid"    column="wx_uid"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="avator"    column="avator"    />
+        <result property="userProvice"    column="user_provice"    />
+        <result property="userCity"    column="user_city"    />
+        <result property="userCountry"    column="user_country"    />
+        <result property="wxQrcode"    column="wx_QRcode"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectWxUserVo">
+        select id, nick_name, user_name, gender, openid, wx_uid, telephone, avator, user_provice, user_city, user_country, wx_QRcode, create_by, create_time, update_by, update_time, remark from wx_user
+    </sql>
+
+    <select id="selectWxUserList" parameterType="WxUser" resultMap="WxUserResult">
+        <include refid="selectWxUserVo"/>
+        <where>  
+            <if test="nickName != null  and nickName != ''"> and nick_name like concat('%', #{nickName}, '%')</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="gender != null  and gender != ''"> and gender = #{gender}</if>
+            <if test="openid != null  and openid != ''"> and openid = #{openid}</if>
+            <if test="wxUid != null  and wxUid != ''"> and wx_uid = #{wxUid}</if>
+            <if test="telephone != null  and telephone != ''"> and telephone = #{telephone}</if>
+            <if test="avator != null  and avator != ''"> and avator = #{avator}</if>
+            <if test="userProvice != null  and userProvice != ''"> and user_provice = #{userProvice}</if>
+            <if test="userCity != null  and userCity != ''"> and user_city = #{userCity}</if>
+            <if test="userCountry != null  and userCountry != ''"> and user_country = #{userCountry}</if>
+            <if test="wxQrcode != null  and wxQrcode != ''"> and wx_QRcode = #{wxQrcode}</if>
+        </where>
+    </select>
+    
+    <select id="selectWxUserById" parameterType="Long" resultMap="WxUserResult">
+        <include refid="selectWxUserVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWxUser" parameterType="WxUser" useGeneratedKeys="true" keyProperty="id">
+        insert into wx_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickName != null">nick_name,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="gender != null">gender,</if>
+            <if test="openid != null">openid,</if>
+            <if test="wxUid != null">wx_uid,</if>
+            <if test="telephone != null">telephone,</if>
+            <if test="avator != null">avator,</if>
+            <if test="userProvice != null">user_provice,</if>
+            <if test="userCity != null">user_city,</if>
+            <if test="userCountry != null">user_country,</if>
+            <if test="wxQrcode != null">wx_QRcode,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nickName != null">#{nickName},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="openid != null">#{openid},</if>
+            <if test="wxUid != null">#{wxUid},</if>
+            <if test="telephone != null">#{telephone},</if>
+            <if test="avator != null">#{avator},</if>
+            <if test="userProvice != null">#{userProvice},</if>
+            <if test="userCity != null">#{userCity},</if>
+            <if test="userCountry != null">#{userCountry},</if>
+            <if test="wxQrcode != null">#{wxQrcode},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWxUser" parameterType="WxUser">
+        update wx_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nickName != null">nick_name = #{nickName},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="openid != null">openid = #{openid},</if>
+            <if test="wxUid != null">wx_uid = #{wxUid},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="avator != null">avator = #{avator},</if>
+            <if test="userProvice != null">user_provice = #{userProvice},</if>
+            <if test="userCity != null">user_city = #{userCity},</if>
+            <if test="userCountry != null">user_country = #{userCountry},</if>
+            <if test="wxQrcode != null">wx_QRcode = #{wxQrcode},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWxUserById" parameterType="Long">
+        delete from wx_user where id = #{id}
+    </delete>
+
+    <delete id="deleteWxUserByIds" parameterType="String">
+        delete from wx_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

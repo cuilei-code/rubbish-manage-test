@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.PointRecordMainMapper">
+    
+    <resultMap type="PointRecordMain" id="PointRecordMainResult">
+        <result property="id"    column="id"    />
+        <result property="wxUid"    column="wx_uid"    />
+        <result property="wxNickname"    column="wx_nickName"    />
+        <result property="attributePlot"    column="attribute_plot"    />
+        <result property="pointSource"    column="point_source"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="PointRecordMainPointRecordItemResult" type="PointRecordMain" extends="PointRecordMainResult">
+        <collection property="pointRecordItemList" notNullColumn="sub_id" javaType="java.util.List" resultMap="PointRecordItemResult" />
+    </resultMap>
+
+    <resultMap type="PointRecordItem" id="PointRecordItemResult">
+        <result property="id"    column="sub_id"    />
+        <result property="recordMainId"    column="sub_record_main_id"    />
+        <result property="effectivePoint"    column="sub_effective_point"    />
+        <result property="virtualPoint"    column="sub_virtual_point"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <sql id="selectPointRecordMainVo">
+        select id, wx_uid, wx_nickName, attribute_plot, point_source, is_deleted, create_by, create_time, update_by, update_time from point_record_main
+    </sql>
+
+    <select id="selectPointRecordMainList" parameterType="PointRecordMain" resultMap="PointRecordMainResult">
+        <include refid="selectPointRecordMainVo"/>
+        <where>  
+            <if test="wxUid != null  and wxUid != ''"> and wx_uid = #{wxUid}</if>
+            <if test="wxNickname != null  and wxNickname != ''"> and wx_nickName like concat('%', #{wxNickname}, '%')</if>
+            <if test="attributePlot != null  and attributePlot != ''"> and attribute_plot = #{attributePlot}</if>
+            <if test="pointSource != null  and pointSource != ''"> and point_source = #{pointSource}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectPointRecordMainById" parameterType="String" resultMap="PointRecordMainPointRecordItemResult">
+        select a.id, a.wx_uid, a.wx_nickName, a.attribute_plot, a.point_source, a.is_deleted, a.create_by, a.create_time, a.update_by, a.update_time,
+ b.id as sub_id, b.record_main_id as sub_record_main_id, b.effective_point as sub_effective_point, b.virtual_point as sub_virtual_point, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
+        from point_record_main a
+        left join point_record_item b on b.record_main_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertPointRecordMain" parameterType="PointRecordMain">
+        insert into point_record_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="wxUid != null">wx_uid,</if>
+            <if test="wxNickname != null">wx_nickName,</if>
+            <if test="attributePlot != null">attribute_plot,</if>
+            <if test="pointSource != null">point_source,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="wxUid != null">#{wxUid},</if>
+            <if test="wxNickname != null">#{wxNickname},</if>
+            <if test="attributePlot != null">#{attributePlot},</if>
+            <if test="pointSource != null">#{pointSource},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePointRecordMain" parameterType="PointRecordMain">
+        update point_record_main
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="wxUid != null">wx_uid = #{wxUid},</if>
+            <if test="wxNickname != null">wx_nickName = #{wxNickname},</if>
+            <if test="attributePlot != null">attribute_plot = #{attributePlot},</if>
+            <if test="pointSource != null">point_source = #{pointSource},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePointRecordMainById" parameterType="String">
+        delete from point_record_main where id = #{id}
+    </delete>
+
+    <delete id="deletePointRecordMainByIds" parameterType="String">
+        delete from point_record_main where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deletePointRecordItemByRecordMainIds" parameterType="String">
+        delete from point_record_item where record_main_id in 
+        <foreach item="recordMainId" collection="array" open="(" separator="," close=")">
+            #{recordMainId}
+        </foreach>
+    </delete>
+
+    <delete id="deletePointRecordItemByRecordMainId" parameterType="String">
+        delete from point_record_item where record_main_id = #{recordMainId}
+    </delete>
+
+    <insert id="batchPointRecordItem">
+        insert into point_record_item( id, record_main_id, effective_point, virtual_point, create_by, create_time, update_by, update_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.recordMainId}, #{item.effectivePoint}, #{item.virtualPoint}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+        </foreach>
+    </insert>
+</mapper>

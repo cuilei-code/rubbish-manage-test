@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.SysNoticeRecordMapper">
+    
+    <resultMap type="SysNoticeRecord" id="SysNoticeRecordResult">
+        <result property="id"    column="id"    />
+        <result property="noticeId"    column="notice_id"    />
+        <result property="sendUser"    column="send_user"    />
+        <result property="toUser"    column="to_user"    />
+        <result property="readStatus"    column="read_status"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSysNoticeRecordVo">
+        select id, notice_id, send_user, to_user, read_status, is_deleted, create_by, create_time, update_by, update_time from sys_Notice_Record
+    </sql>
+
+    <select id="selectSysNoticeRecordList" parameterType="SysNoticeRecord" resultMap="SysNoticeRecordResult">
+        <include refid="selectSysNoticeRecordVo"/>
+        <where>  
+            <if test="noticeId != null "> and notice_id = #{noticeId}</if>
+            <if test="sendUser != null "> and send_user = #{sendUser}</if>
+            <if test="toUser != null "> and to_user = #{toUser}</if>
+            <if test="readStatus != null  and readStatus != ''"> and read_status = #{readStatus}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectSysNoticeRecordById" parameterType="Long" resultMap="SysNoticeRecordResult">
+        <include refid="selectSysNoticeRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSysNoticeRecord" parameterType="SysNoticeRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_Notice_Record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null">notice_id,</if>
+            <if test="sendUser != null">send_user,</if>
+            <if test="toUser != null">to_user,</if>
+            <if test="readStatus != null">read_status,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null">#{noticeId},</if>
+            <if test="sendUser != null">#{sendUser},</if>
+            <if test="toUser != null">#{toUser},</if>
+            <if test="readStatus != null">#{readStatus},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysNoticeRecord" parameterType="SysNoticeRecord">
+        update sys_Notice_Record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="noticeId != null">notice_id = #{noticeId},</if>
+            <if test="sendUser != null">send_user = #{sendUser},</if>
+            <if test="toUser != null">to_user = #{toUser},</if>
+            <if test="readStatus != null">read_status = #{readStatus},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysNoticeRecordById" parameterType="Long">
+        delete from sys_Notice_Record where id = #{id}
+    </delete>
+
+    <delete id="deleteSysNoticeRecordByIds" parameterType="String">
+        delete from sys_Notice_Record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

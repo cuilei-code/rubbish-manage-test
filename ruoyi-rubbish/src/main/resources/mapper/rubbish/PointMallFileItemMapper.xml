@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.PointMallFileItemMapper">
+    
+    <resultMap type="PointMallFileItem" id="PointMallFileItemResult">
+        <result property="id"    column="id"    />
+        <result property="mallMainId"    column="mall_main_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPointMallFileItemVo">
+        select id, mall_main_id, file_name, file_url, file_type, is_deleted, create_by, create_time, update_by, update_time from point_mall_file_item
+    </sql>
+
+    <select id="selectPointMallFileItemList" parameterType="PointMallFileItem" resultMap="PointMallFileItemResult">
+        <include refid="selectPointMallFileItemVo"/>
+        <where>  
+            <if test="mallMainId != null "> and mall_main_id = #{mallMainId}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url = #{fileUrl}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectPointMallFileItemById" parameterType="Long" resultMap="PointMallFileItemResult">
+        <include refid="selectPointMallFileItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPointMallFileItem" parameterType="PointMallFileItem">
+        insert into point_mall_file_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="mallMainId != null">mall_main_id,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="mallMainId != null">#{mallMainId},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePointMallFileItem" parameterType="PointMallFileItem">
+        update point_mall_file_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mallMainId != null">mall_main_id = #{mallMainId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePointMallFileItemById" parameterType="Long">
+        delete from point_mall_file_item where id = #{id}
+    </delete>
+
+    <delete id="deletePointMallFileItemByIds" parameterType="String">
+        delete from point_mall_file_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

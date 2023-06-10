@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.rubbish.mapper.PointUseRecordDetailMapper">
+    
+    <resultMap type="PointUseRecordDetail" id="PointUseRecordDetailResult">
+        <result property="id"    column="id"    />
+        <result property="useRecordId"    column="use_record_id"    />
+        <result property="useCount"    column="use_count"    />
+        <result property="useRemark"    column="use_remark"    />
+        <result property="ticketCode"    column="ticket_code"    />
+        <result property="isDeleted"    column="is_deleted"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPointUseRecordDetailVo">
+        select id, use_record_id, use_count, use_remark, ticket_code, is_deleted, create_by, create_time, update_by, update_time from point_use_record_detail
+    </sql>
+
+    <select id="selectPointUseRecordDetailList" parameterType="PointUseRecordDetail" resultMap="PointUseRecordDetailResult">
+        <include refid="selectPointUseRecordDetailVo"/>
+        <where>  
+            <if test="useRecordId != null "> and use_record_id = #{useRecordId}</if>
+            <if test="useCount != null "> and use_count = #{useCount}</if>
+            <if test="useRemark != null  and useRemark != ''"> and use_remark = #{useRemark}</if>
+            <if test="ticketCode != null  and ticketCode != ''"> and ticket_code = #{ticketCode}</if>
+            <if test="isDeleted != null  and isDeleted != ''"> and is_deleted = #{isDeleted}</if>
+        </where>
+    </select>
+    
+    <select id="selectPointUseRecordDetailById" parameterType="Long" resultMap="PointUseRecordDetailResult">
+        <include refid="selectPointUseRecordDetailVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPointUseRecordDetail" parameterType="PointUseRecordDetail">
+        insert into point_use_record_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="useRecordId != null">use_record_id,</if>
+            <if test="useCount != null">use_count,</if>
+            <if test="useRemark != null">use_remark,</if>
+            <if test="ticketCode != null">ticket_code,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="useRecordId != null">#{useRecordId},</if>
+            <if test="useCount != null">#{useCount},</if>
+            <if test="useRemark != null">#{useRemark},</if>
+            <if test="ticketCode != null">#{ticketCode},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePointUseRecordDetail" parameterType="PointUseRecordDetail">
+        update point_use_record_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="useRecordId != null">use_record_id = #{useRecordId},</if>
+            <if test="useCount != null">use_count = #{useCount},</if>
+            <if test="useRemark != null">use_remark = #{useRemark},</if>
+            <if test="ticketCode != null">ticket_code = #{ticketCode},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePointUseRecordDetailById" parameterType="Long">
+        delete from point_use_record_detail where id = #{id}
+    </delete>
+
+    <delete id="deletePointUseRecordDetailByIds" parameterType="String">
+        delete from point_use_record_detail where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
