@@ -49,7 +49,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectWxUserVo"/>
         where id = #{id}
     </select>
-        
+    <select id="selectWxUserByOpenId" resultMap="WxUserResult" parameterType="string">
+        <include refid="selectWxUserVo"/>
+        where openid = #{openId}
+    </select>
+
     <insert id="insertWxUser" parameterType="WxUser" useGeneratedKeys="true" keyProperty="id">
         insert into wx_user
         <trim prefix="(" suffix=")" suffixOverrides=",">

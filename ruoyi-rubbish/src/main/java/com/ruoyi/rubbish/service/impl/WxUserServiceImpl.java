@@ -44,6 +44,11 @@ public class WxUserServiceImpl implements IWxUserService
         return wxUserMapper.selectWxUserList(wxUser);
     }
 
+    @Override
+    public WxUser selectWxUserByOpenId(String openId) {
+        return wxUserMapper.selectWxUserByOpenId(openId);
+    }
+
     /**
      * 新增客户端普通用户
      * 

@@ -18,6 +18,7 @@ public interface WxUserMapper
      * @return 客户端普通用户
      */
     public WxUser selectWxUserById(Long id);
+    public WxUser selectWxUserByOpenId(String openId);
 
     /**
      * 查询客户端普通用户列表

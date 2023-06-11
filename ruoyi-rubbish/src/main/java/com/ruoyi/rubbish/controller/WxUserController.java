@@ -69,6 +69,13 @@ public class WxUserController extends BaseController
         return success(wxUserService.selectWxUserById(id));
     }
 
+    //@PreAuthorize("@ss.hasPermi('rubbish:WxUser:query')")
+    @GetMapping(value = "/wx/{openid}")
+    public AjaxResult getInfoByOpenId(@PathVariable("openid") String openid)
+    {
+        return success(wxUserService.selectWxUserByOpenId(openid));
+    }
+
     /**
      * 新增客户端普通用户
      */

@@ -135,13 +135,36 @@
         <el-form-item label="标签" prop="tag">
           <el-input v-model="form.tag" placeholder="请输入标签" />
         </el-form-item>
+        <el-form-item>
+          <el-button type="text" @click="dialogForSite">选择地点</el-button>
+        </el-form-item>
       </el-form>
+      
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog width="80%" height="100%" :visible.sync="site" title="选择位置" append-to-body>
+        <iframe id="mapPage" width="100%" height="500px" frameborder=0
+        :src="iframeSrc">
+        </iframe>
+    </el-dialog>
+
+    <!-- <div>
+        <iframe
+         ref="iframe"
+         id="iframe"
+         frameborder="0"
+         :src="iframeSrc"
+         style="min-height: 800px;width: 100%"
+        >
+        </iframe>
+        
+  </div> -->
   </div>
+  
 </template>
 
 <script>
@@ -151,6 +174,8 @@ export default {
   name: "Location",
   data() {
     return {
+      iframeSrc: "",
+      site:false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -288,6 +313,39 @@ export default {
       this.download('rubbish/location/export', {
         ...this.queryParams
       }, `location_${new Date().getTime()}.xlsx`)
+    },
+    dialogForSite() {
+      var that = this;
+      this.site = true;
+      this.iframeSrc = "https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=TRWBZ-MH4KV-SAUPR-5WTJQ-AI7I2-6UFJ5&referer=test";
+      window.addEventListener('message', (event)=> {
+        // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
+        var loc = event.data;
+        if (loc && loc.module == 'locationPicker') {//防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+          
+          console.log('location', loc);
+          this.form = {
+            id: this.form.id,
+            simpleName: loc.poiname,
+            address: loc.poiaddress,
+            longitude: loc.latlng.lng,
+            latitude: loc.latlng.lat,
+            remark: loc.cityname,
+            tag: null,
+            createBy: null,
+            createTime: null,
+            updateBy: null,
+            updateTime: null
+          };
+          // that.form.simpleName = loc.poiname;
+          // that.form.address = loc.poiaddress;
+          // that.form.longitude = loc.latlng.lng;
+          // that.form.latitude = loc.latlng.lat;
+          // that.form.remark = loc.cityname;
+          
+          that.site = false;
+        }
+      }, false)
     }
   }
 };
