@@ -17,26 +17,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="性别  0男   1女" prop="gender">
+      <el-form-item label="性别" prop="gender">
         <el-input
           v-model="queryParams.gender"
-          placeholder="请输入性别  0男   1女"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="微信openid" prop="openid">
-        <el-input
-          v-model="queryParams.openid"
-          placeholder="请输入微信openid"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="微信uid" prop="wxUid">
-        <el-input
-          v-model="queryParams.wxUid"
-          placeholder="请输入微信uid"
+          placeholder="请输入性别"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -80,38 +64,38 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['rubbish:WxUser:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['rubbish:WxUser:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['rubbish:WxUser:remove']"
-        >删除</el-button>
-      </el-col>
+      <!--      <el-col :span="1.5">
+              <el-button
+                type="primary"
+                plain
+                icon="el-icon-plus"
+                size="mini"
+                @click="handleAdd"
+                v-hasPermi="['rubbish:WxUser:add']"
+              >新增</el-button>
+            </el-col>
+            <el-col :span="1.5">
+              <el-button
+                type="success"
+                plain
+                icon="el-icon-edit"
+                size="mini"
+                :disabled="single"
+                @click="handleUpdate"
+                v-hasPermi="['rubbish:WxUser:edit']"
+              >修改</el-button>
+            </el-col>
+            <el-col :span="1.5">
+              <el-button
+                type="danger"
+                plain
+                icon="el-icon-delete"
+                size="mini"
+                :disabled="multiple"
+                @click="handleDelete"
+                v-hasPermi="['rubbish:WxUser:remove']"
+              >删除</el-button>
+            </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -127,12 +111,9 @@
 
     <el-table v-loading="loading" :data="WxUserList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键id" align="center" prop="id" />
       <el-table-column label="微信昵称" align="center" prop="nickName" />
       <el-table-column label="姓名" align="center" prop="userName" />
-      <el-table-column label="性别  0男   1女" align="center" prop="gender" />
-      <el-table-column label="微信openid" align="center" prop="openid" />
-      <el-table-column label="微信uid" align="center" prop="wxUid" />
+      <el-table-column label="性别" align="center" prop="gender" />
       <el-table-column label="手机号" align="center" prop="telephone" />
       <el-table-column label="头像" align="center" prop="avator" />
       <el-table-column label="省" align="center" prop="userProvice" />
@@ -140,7 +121,7 @@
       <el-table-column label="国家" align="center" prop="userCountry" />
       <el-table-column label="个人微信二维码" align="center" prop="wxQrcode" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+<!--      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -157,9 +138,9 @@
             v-hasPermi="['rubbish:WxUser:remove']"
           >删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column>-->
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -217,7 +198,7 @@
 </template>
 
 <script>
-import { listWxUser, getWxUser, delWxUser, addWxUser, updateWxUser } from "@/api/rubbish/WxUser";
+import { listWxUser, getWxUser, addWxUser, updateWxUser,delWxUser } from "@/api/rubbish/WxUser";
 
 export default {
   name: "WxUser",
@@ -328,7 +309,7 @@ export default {
       this.title = "添加客户端普通用户";
     },
     /** 修改按钮操作 */
-    handleUpdate(row) {
+    /*handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
       getWxUser(id).then(response => {
@@ -336,7 +317,7 @@ export default {
         this.open = true;
         this.title = "修改客户端普通用户";
       });
-    },
+    },*/
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
@@ -358,7 +339,7 @@ export default {
       });
     },
     /** 删除按钮操作 */
-    handleDelete(row) {
+    /*handleDelete(row) {
       const ids = row.id || this.ids;
       this.$modal.confirm('是否确认删除客户端普通用户编号为"' + ids + '"的数据项？').then(function() {
         return delWxUser(ids);
@@ -366,7 +347,7 @@ export default {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
-    },
+    },*/
     /** 导出按钮操作 */
     handleExport() {
       this.download('rubbish/WxUser/export', {

@@ -9,10 +9,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="积分数量，记录的是拉新用户的那个人，赠送的临时积分。待被拉的新人使用小程序后，该积分3天后实际充值到推荐人的账户中" prop="pointNum">
+      <el-form-item label="积分数量" prop="pointNum">
         <el-input
           v-model="queryParams.pointNum"
-          placeholder="请输入积分数量，记录的是拉新用户的那个人，赠送的临时积分。待被拉的新人使用小程序后，该积分3天后实际充值到推荐人的账户中"
+          placeholder="请输入积分数量"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -72,8 +72,8 @@
     <el-table v-loading="loading" :data="temporaryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="微信uid" align="center" prop="wxUid" />
-      <el-table-column label="积分数量，记录的是拉新用户的那个人，赠送的临时积分。待被拉的新人使用小程序后，该积分3天后实际充值到推荐人的账户中" align="center" prop="pointNum" />
-      <el-table-column label="积分状态  0未到账   1已到账" align="center" prop="status" />
+      <el-table-column label="积分数量" align="center" prop="pointNum" />
+      <el-table-column label="积分状态" align="center" prop="status" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -93,7 +93,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -105,14 +105,12 @@
     <!-- 添加或修改临时积分对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="主键id" prop="id">
-          <el-input v-model="form.id" placeholder="请输入主键id" />
-        </el-form-item>
+
         <el-form-item label="微信uid" prop="wxUid">
           <el-input v-model="form.wxUid" placeholder="请输入微信uid" />
         </el-form-item>
-        <el-form-item label="积分数量，记录的是拉新用户的那个人，赠送的临时积分。待被拉的新人使用小程序后，该积分3天后实际充值到推荐人的账户中" prop="pointNum">
-          <el-input v-model="form.pointNum" placeholder="请输入积分数量，记录的是拉新用户的那个人，赠送的临时积分。待被拉的新人使用小程序后，该积分3天后实际充值到推荐人的账户中" />
+        <el-form-item label="积分数量" prop="pointNum">
+          <el-input v-model="form.pointNum" placeholder="请输入积分数量" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
